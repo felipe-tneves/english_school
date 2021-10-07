@@ -21,3 +21,4 @@ npx sequelize-cli model:create --name Matriculas --attributes status:string
 npm outdated --ver se tem atualizações
 coloca as novas versões no package.josn
 npm update
+npx sequelize-cli db:migrate
