@@ -26,10 +26,10 @@ class PessoaController {
     static async pegaUmaPessoa(req, res) {
         const { id } = req.params
         try {
-            const umaPessoa = await database.Pessoas.findOne({ 
-                where: { 
-                    id: Number(id) 
-                } 
+            const umaPessoa = await database.Pessoas.findOne({
+                where: {
+                    id: Number(id)
+                }
             })
 
             return res.status(200).json(umaPessoa)
@@ -49,47 +49,47 @@ class PessoaController {
         }
     }
 
-    static async atualizaPessoa(req, res){
+    static async atualizaPessoa(req, res) {
         const { id } = req.params
         const novasInfos = req.body
 
         try {
-            await database.Pessoas.update(novasInfos, { where: { id: Number(id) }})
+            await database.Pessoas.update(novasInfos, { where: { id: Number(id) } })
             const pessoaAtualizada = await database.Pessoas.findOne({
                 where: {
                     id: Number(id)
                 }
             })
-        return res.status(200).json(pessoaAtualizada);
+            return res.status(200).json(pessoaAtualizada);
 
         } catch (error) {
             return res.status(500).json(error.message)
         }
     }
 
-    static async apagaPessoa(req, res){
+    static async apagaPessoa(req, res) {
         const { id } = req.params
         try {
-            await database.Pessoas.destroy( { where: { id: Number(id) }} )
+            await database.Pessoas.destroy({ where: { id: Number(id) } })
             return res.status(200).json({ mensagem: `id ${id} deletado` })
-            
+
         } catch (error) {
             return res.status(500).json(error.message)
         }
     }
 
-    static async restauraPessoa(req, res){
+    static async restauraPessoa(req, res) {
         const { id } = req.params
         try {
-            await database.Pessoas.restore({ where: { id: Number(id) }})
-            return res.status(200).json({ mensagem: `id ${id} restaurado`})
+            await database.Pessoas.restore({ where: { id: Number(id) } })
+            return res.status(200).json({ mensagem: `id ${id} restaurado` })
         } catch (error) {
             return res.status(500).json(error.message)
         }
     }
 
-    static async pegaUmaMatricula(req, res){
-        const{ estudanteId, matriculaId} = req.params
+    static async pegaUmaMatricula(req, res) {
+        const { estudanteId, matriculaId } = req.params
         try {
             const umaMatricula = await database.Matriculas.findOne({
                 where: {
@@ -106,7 +106,7 @@ class PessoaController {
 
     static async criaMatricula(req, res) {
         const { estudanteId } = req.params
-        const novaMatricula  = {...req.body, estudante_id: Number(estudanteId)}
+        const novaMatricula = { ...req.body, estudante_id: Number(estudanteId) }
         try {
             const novaMatriculaCriada = await database.Matriculas.create(novaMatricula)
             return res.status(201).json(novaMatriculaCriada)
@@ -116,45 +116,47 @@ class PessoaController {
         }
     }
 
-    static async atualizaMatricula(req, res){
+    static async atualizaMatricula(req, res) {
         const { estudanteId, matriculaId } = req.params
         const novasInfos = req.body
 
         try {
-            await database.Matriculas.update(novasInfos, { 
-                where: { 
+            await database.Matriculas.update(novasInfos, {
+                where: {
                     id: Number(matriculaId),
                     estudante_id: Number(estudanteId)
-                 }})
+                }
+            })
             const matriculaAtualizada = await database.Matriculas.findOne({
                 where: {
                     id: Number(matriculaId)
                 }
             })
-        return res.status(200).json(matriculaAtualizada);
+            return res.status(200).json(matriculaAtualizada);
 
         } catch (error) {
             return res.status(500).json(error.message)
         }
     }
 
-    static async apagaMatricula(req, res){
+    static async apagaMatricula(req, res) {
         const { estudanteId, matriculaId } = req.params
         try {
-            await database.Matriculas.destroy({ 
-                where: { 
+            await database.Matriculas.destroy({
+                where: {
                     id: Number(matriculaId),
                     estudante_id: Number(estudanteId)
-                 }})
+                }
+            })
             return res.status(200).json({ mensagem: `id ${matriculaId} deletado` })
-            
+
         } catch (error) {
             return res.status(500).json(error.message)
         }
     }
 
     static async restauraMatricula(req, res) {
-        const { estudanteId, matriculaId} = req.params
+        const { estudanteId, matriculaId } = req.params
         try {
             await database.Matriculas.restore({
                 where: {
@@ -162,7 +164,19 @@ class PessoaController {
                     estudante_id: Number(estudanteId)
                 }
             })
-            return res.status(200).json({ mensagem: `id ${matriculaId} restaurado`})
+            return res.status(200).json({ mensagem: `id ${matriculaId} restaurado` })
+        } catch (error) {
+            return res.status(500).json(error.message)
+        }
+    }
+
+    static async pegaMatriculas(req, res) {
+        const { estudanteId } = req.params
+        try {
+            const pessoa = await database.Pessoas.findOne({ where: {id: Number(estudanteId)}})
+            const matriculas = await pessoa.getAulasMatriculadas()
+            return res.status(200).json(matriculas)
+
         } catch (error) {
             return res.status(500).json(error.message)
         }
