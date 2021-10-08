@@ -22,3 +22,18 @@ npm outdated --ver se tem atualizações
 coloca as novas versões no package.josn
 npm update
 npx sequelize-cli db:migrate
+
+
+FROM: pega as tabelas onde estão os dados
+
+WHERE: filtra os dados
+
+GROUP BY: agrega os dados
+
+HAVING: filtra os dados agregados
+
+SELECT: retorna os resultados
+
+ORDER BY: ordena os resultados
+
+LIMIT: limita a quantidade de resultados
