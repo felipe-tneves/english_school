@@ -1,10 +1,12 @@
 const database = require('../models');
+const Services = require('../services/Services')
+const niveisServices = new Services('Niveis')
 
 class NivelController{
 
     static async pegaTodosOsNiveis(req, res) {
         try {
-            const TodosOsNiveis = await database.Niveis.findAll()
+            const TodosOsNiveis = await niveisServices.pegaTodosOsRegistros
 
             return res.status(200).json(TodosOsNiveis);
         } catch (error) {
@@ -15,11 +17,7 @@ class NivelController{
     static async pegaUmNivel(req, res){
         const { id } = req.params
         try {
-            const umNivel = await database.Niveis.findOne({
-                where: {
-                    id: Number(id)
-                }
-            })
+            const umNivel = await niveisServices.pegaUmregistro(id)
 
             return res.status(200).json(umNivel);
         } catch (error) {
@@ -30,7 +28,7 @@ class NivelController{
     static async criaNivel(req, res) {
         const novoNivel = req.body;
         try {
-            const novoNivelCriado = await database.Niveis.create(novoNivel)
+            const novoNivelCriado = await niveisServices.criaRegistro(novoNivel)
             return res.status(201).json(novoNivelCriado)
 
         } catch (error) {
